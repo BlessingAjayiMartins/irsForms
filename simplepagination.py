@@ -25,14 +25,13 @@ def main():
  
   number_of_files = int(loose_number)
   pages = math.ceil(number_of_files/200)
-  print(pages)
-  print(type(pages))
+  
 
   database = {}
   index_count = 0
   
 
-  for x in range(1, pages+1):
+  for x in range(0, pages):
     url = 'https://apps.irs.gov/app/picklist/list/priorFormPublication.html;jsessionid=4EuDHbdC5JE19wM91nvptz-G.20?resultsPerPage=200&sortColumn=sortOrder&indexOfFirstRow=' + str(index_count) + '&criteria=&value=&isDescending=false'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -64,7 +63,7 @@ def main():
         database[name][date] = {"form_name":name, "title": title, "date":date, "link": pdf}
       else:
         database[name] = {date : {"form_name":name, "title": title, "date":date, "link": pdf}}
-        # print(database)
+        
     index_count+=200
   with open("database.txt", "w") as outfile:
     json.dump(database, outfile)
@@ -98,9 +97,9 @@ def main():
   # Second utility
   with open ("database.txt") as json_file:
     data = json.load(json_file)
-    form_lookup = input("please type in form name : ")
+    form_lookup = input("please type in form name you would like to download : ")
     if data[form_lookup]:
-      range_input = input("type in year xxxx or range seperated by - ex:2012-2014 : ")
+      range_input = input("please type in the year in xxxx format or range seperated by -  ex:xxxx-xxxx : ")
       if len(range_input) == 9:
         range_array = range_input.split('-')
         available_date_in_range = []
