@@ -67,7 +67,9 @@ def main():
     index_count+=200
   with open("database.txt", "w") as outfile:
     json.dump(database, outfile)
-  print("database.txt file downloaded in JSON format")
+    print("database.txt file downloaded in JSON format")
+
+
   #First utility 
   with open ("database.txt") as json_file:
     data = json.load(json_file)
@@ -93,7 +95,13 @@ def main():
         date_list = []
       else:
         print("form not found")
-    print(result)
+    # print(result)
+    with open("result.json", "w") as outfile:
+      json.dump(result, outfile)
+      print("result.json file now available in current directory")
+
+
+
   # Second utility
   with open ("database.txt") as json_file:
     data = json.load(json_file)
@@ -119,16 +127,16 @@ def main():
           if not os.path.exists(form_lookup):
             print("creating subdirectory..")
             os.mkdir(form_lookup, mode = 0o666)
-            # request_download = requests.get(pdf, stream=True)
+            
             response = requests.get(pdf)
-            # request_download = BeautifulSoup(response.content, "html.parser")
+            
             # Navigate to the desired directory
             os.chdir(f"{form_lookup}")
             # Stream and save the data
             with open(f"{form_lookup} - {date_as_key}.pdf", 'wb') as f:
                 f.write(response.content)
             
-            # print(f"Downloading {date_as_key} \n")
+            
               # Go up a level
             os.chdir('..')
             print("Enjoy your downloads!")
@@ -183,5 +191,3 @@ def main():
       print("Form not available.")
   
 main()
-
-
